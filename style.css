@@ -1,0 +1,8 @@
+#tooltip{
+    background-color:rgb(245, 218, 130);
+    position: absolute;
+    width: 100px;
+    height:50px;
+    pointer-events:none;
+    /*opacity: 0;*/
+}

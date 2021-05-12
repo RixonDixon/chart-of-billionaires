@@ -1,52 +1,53 @@
 
 
 
-d3.json("../d3/forbes_billionaires.json").then(
+d3.json("forbes_billionaires.json").then(
    function(d){
        console.log(d);
         createChart(d);
 });
 
 function createChart(data) {
-    console.log(data)
+ 
+
+    width= 2000;
+    height = 1000;
+  var svg = d3.select('#chart')
+    .append('svg')
+    .attr('height', height)
+    .attr ('width', width)
+    .append('g')
+    .attr('transform', 'translate('+ width/2+ ','+height/2+')');
+
+    var radiusScale = d3.scaleSqrt().domain([1, 50]).range([0,35])
+
+    var simulera = d3.forceSimulation()
     
-        const simulation = d3.forceSimulation(data.nodes)
-         .force('charge', d3.forceManyBody().strength(-100))
-         .force('link', d3.forceLink(data.links).id(d => d.id)
-               .distance(50))
-          .force('center', d3.forceCenter(300, 300))
+    .force('collide', d3.forceCollide(function(d) {
+      return radiusScale(d.NetWorth +1)
+    }))
+    
+    var circles = svg.selectAll()
+        .data(data)
+        .enter().append('circle')
+        .attr('r',function(d) {
+          return radiusScale(d.NetWorth)
+        })
+        .attr('fill', 'lightblue')
+        .attr('cx', 100)
+        .attr('cy', 300)
         
-          const svg = d3.select("body").append("svg")
-          .style('background', '#ddeeff')
-          .attr("viewBox", [0, 0, 600, 600]);
-        
-         const node = svg.selectAll('circle')
-           .data(data.nodes)
-           .enter()
-           .append('circle')
-           .attr('r', 25)
-           .attr('fill', 'blue')
-           .attr('fill', 'white')
-           .attr('stroke', 'orangered')
-           .on('click',(event,d => console.log(event)));       
-         const link = svg
-           .selectAll('path.link')
-           .data(data.links)
-           .enter()
-           .append('path')
-           .attr('stroke', 'black')
-           .attr('fill', 'none');
-        
-        const lineGenerator = d3.line();
          
-         simulation.on('tick', () => {
-                       node.attr('cx', d => d.x);
-                       node.attr('cy', d => d.y);
-                       link.attr('d', d => lineGenerator([
-                         [d.source.x, d.source.y], 
-                         [d.target.x, d.target.y]]) 
-                       )
-         });
-         return svg.node();
-      }
+        simulera.nodes(data)
+        .on('tick', tick)
+
+        function tick(){
+        circles
+          .attr('cx', function(d) {
+            return d.x
+          })
+          .attr('cy', function(d) {
+            return d.y
+          })
+}}
 
