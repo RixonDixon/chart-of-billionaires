@@ -5,13 +5,14 @@ d3.json("/forbes_billionaires.json").then(
    function(d){
        console.log(d);
         createChart(d);
+      
 });
 
 function createChart(data) {
  
 
-    width= 2000;
-    height = 1000;
+    width= 1800;
+    height =1000;
 
     tooltip = d3.select('body')
     .append('div')
@@ -49,7 +50,10 @@ function createChart(data) {
         .attr('fill', function(d){ 
           if(d.Country == 'United States'){ 
             return "blue"}
+            if(d.Country == 'Finland'){ 
+              return "Green"}
         if(d.Country == "China"){ return 'red'}})
+        
 
         .on('mouseover', function(d) {
           tooltip.transition().duration(200)
@@ -57,8 +61,8 @@ function createChart(data) {
             .style('visibility', 'visible')
             console.log(d)
           tooltip.html(
-            '<div id="dysfunc" style="font-size: 1rem; font-weight: bold; visibility: visible">' +
-               'Name:'+ this.__data__.Name + '<br>' +'Worth:'+ this.__data__.NetWorth + '<br>'+'Selfmade: '+this.__data__.Self_made+ '<br>'+'</div>'
+            '<div id="dysfunc" style="font-size: 1rem;  visibility: visible">' + 'Rank:'+ this.__data__.Rank + '<br>' +
+               'Name:'+ this.__data__.Name + '<br>' +'Worth:'+ this.__data__.NetWorth + ' bn $' + '<br>'+'Selfmade: '+this.__data__.Self_made+'<br>'+'Nationality: '+this.__data__.Citizenship + '<br>'+'</div>'
           )
             .style('left', (event.pageX -35) + 'px')
             .style('top', (event.pageY -30) + 'px')
@@ -72,8 +76,8 @@ function createChart(data) {
         simulera.nodes(data)
         .on('tick', tick);
       svg.append("text")
-        .attr("x", -430)             
-        .attr("y", -420)
+        .attr("x", -400)             
+        .attr("y", -440)
         .attr("text-anchor", "middle")  
         .style("font-size", "25px") 
         .style('fill', 'blue')
@@ -82,7 +86,7 @@ function createChart(data) {
 
         svg.append("text")
         .attr("x", -430)             
-        .attr("y", -380)
+        .attr("y", -400)
         .attr("text-anchor", "middle")  
         .style("font-size", "25px") 
         .style('fill', 'red')
@@ -90,12 +94,22 @@ function createChart(data) {
         .text("Red = China");
 
         svg.append("text")
-        .attr("x", -430)             
-        .attr("y", -340)
+        .attr("x", -460)             
+        .attr("y", -360)
         .attr("text-anchor", "middle")  
         .style("font-size", "25px") 
         .style("text-decoration", "underline")  
-        .text("Black = Other");
+        .text("Black = Other")
+        
+
+        svg.append("text")
+        .attr("x", -480)             
+        .attr("y", -320)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "25px") 
+        .style('fill', 'green')
+        .style("text-decoration", "underline")  
+        .text("Green = Finland");
 
         function tick(){
         circles
@@ -109,5 +123,7 @@ function createChart(data) {
          
         
       
-}}
+}
+  
+}
 
