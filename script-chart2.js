@@ -10,6 +10,28 @@ d3.json("/forbes_billionaires.json").then(
 
 function createChart(data) {
  
+  
+  var chinaNetWorth= 0;
+  var usNetWorth = 0;
+  var finNetWorth = 0;
+  var otherNetWorth = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].Country == "United States"){
+      usNetWorth += data[i].NetWorth;
+    }else if(data[i].Country == "China") {
+      chinaNetWorth += data[i].NetWorth; 
+    }else if (data[i].Country == "Finland"){
+      finNetWorth += data[i].NetWorth
+    }else{
+      otherNetWorth += data[i].NetWorth
+    }
+  }
+
+
+  var roundUSNW = Math.round(usNetWorth)
+  var roundCHNW =Math.round(chinaNetWorth)
+  var roundFINNW =Math.round(finNetWorth)
+  var roundOTHNW =Math.round(otherNetWorth)
 
     width= 1800;
     height =1000;
@@ -75,41 +97,35 @@ function createChart(data) {
          
         simulera.nodes(data)
         .on('tick', tick);
-      svg.append("text")
-        .attr("x", -400)             
-        .attr("y", -440)
-        .attr("text-anchor", "middle")  
-        .style("font-size", "25px") 
-        .style('fill', 'blue')
-        .style("text-decoration", "underline")  
-        .text("Blue = USA");
-
-        svg.append("text")
-        .attr("x", -430)             
-        .attr("y", -400)
-        .attr("text-anchor", "middle")  
-        .style("font-size", "25px") 
-        .style('fill', 'red')
-        .style("text-decoration", "underline")  
-        .text("Red = China");
-
-        svg.append("text")
-        .attr("x", -460)             
-        .attr("y", -360)
-        .attr("text-anchor", "middle")  
-        .style("font-size", "25px") 
-        .style("text-decoration", "underline")  
-        .text("Black = Other")
         
-
         svg.append("text")
-        .attr("x", -480)             
-        .attr("y", -320)
-        .attr("text-anchor", "middle")  
+        .attr("x", -530)
+        .attr("y", 250)
+        .attr("text-anchor", "middle")
         .style("font-size", "25px") 
-        .style('fill', 'green')
-        .style("text-decoration", "underline")  
-        .text("Green = Finland");
+        .attr('fill', 'blue')
+        .text("US networth " + roundUSNW);
+        svg.append("text")
+        .attr("x", -515)
+        .attr("y", 280)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px") 
+        .attr('fill', 'red')
+        .text("China networth " + roundCHNW);
+        svg.append("text")
+        .attr("x", -500)
+        .attr("y", 310)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
+        .attr('fill', 'black')
+        .text("Other networth " + roundOTHNW);
+        svg.append("text")
+        .attr("x", -485)
+        .attr("y", 340)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
+        .attr('fill', 'green') 
+        .text("Finland networth " + roundFINNW);
 
         function tick(){
         circles
